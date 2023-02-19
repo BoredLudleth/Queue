@@ -1,7 +1,4 @@
-#ifndef QUEUEARMOR
 #include "queue.hpp"
-#define QUEUEARMOR
-#endif
 
 int main () {
     struct queue numbers;
@@ -44,14 +41,19 @@ int main () {
                 printf ("5 - quit\n");
                 break;
             case 5:
+                queue_dtor (&numbers);
+                break;
             default:
                 printf ("Undefined command\n");
                 break;
         }
-        queue_print(numbers);
+
+        if (queue_print(numbers) == 0) {
+            break;
+        }
+        
         while (!scanf_check(scanf("%d", &command)));
     }
-    queue_dtor (&numbers);
 
     return 0;
 }

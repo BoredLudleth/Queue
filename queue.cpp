@@ -1,7 +1,4 @@
-#ifndef QUEUEARMOR
 #include "queue.hpp"
-#define QUEUEARMOR
-#endif
 
 void queue_ctor (struct queue* myQueue) {
     myQueue->buffer = (type*) calloc (QUEUE_LENGTH, sizeof(type));
@@ -17,16 +14,19 @@ void queue_dtor (struct queue* myQueue) {
         myQueue->buffer[i] = POISON;
     }
     free (myQueue->buffer);
+    myQueue->buffer = nullptr;
     myQueue->head = 0;
     myQueue->tail = 0;
 }
 
 void queue_push (struct queue* myQueue, type n) {
     if (myQueue->numOfQueue == QUEUE_LENGTH) {
-        myQueue->errors += ERRORQUEUEISOVERFLOW;
-        printf ("ERRORCODE: %d ERRORQUEUEISOVERFLOW\n", myQueue->errors);
+        myQueue->errors += ERROR_QUEUE_IS_OVERFLOW;
+        printf ("ERROR_CODE: %d ERROR_QUEUE_IS_OVERFLOW\n", myQueue->errors);
         queue_print (*myQueue);
-        exit (0);
+        queue_dtor (myQueue);
+
+        return;
     }
 
     myQueue->buffer[myQueue->tail] = n;
@@ -38,10 +38,12 @@ void queue_push (struct queue* myQueue, type n) {
 
 type queue_pop (struct queue* myQueue) {
     if (myQueue->numOfQueue == 0) {
-        myQueue->errors += ERRORQUEUEISEMPTY;
-        printf ("ERRORCODE: %d ERRORQUEUEISEMPTY\n", myQueue->errors);
+        myQueue->errors += ERROR_QUEUE_IS_EMPTY;
+        printf ("ERROR_CODE: %d ERROR_QUEUE_IS_EMPTY\n", myQueue->errors);
         queue_print (*myQueue);
-        exit (0);
+        queue_dtor (myQueue);
+        
+        return POISON;
     }
 
     int n = 0;
@@ -55,12 +57,17 @@ type queue_pop (struct queue* myQueue) {
     return n;
 }
 
-void queue_print (struct queue myQueue) {
+int queue_print (struct queue myQueue) {
+    if (myQueue.buffer == nullptr) {
+        return 0;
+    }
+
     for (int i = 0; i < QUEUE_LENGTH; i++) {
         printf(TYPE_SPECIFIER, myQueue.buffer[i]);
         printf(" ");
     }
     printf("\n");
+    return 1;
 }
 
 int scanf_check (int x) {

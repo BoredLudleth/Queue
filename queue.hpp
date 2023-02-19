@@ -1,3 +1,6 @@
+#ifndef QUEUE_ARMOR
+#define QUEUE_ARMOR
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,8 +23,8 @@ struct queue {
 };
 
 enum Errors {
-    ERRORQUEUEISOVERFLOW = 1,
-    ERRORQUEUEISEMPTY = 2,
+    ERROR_QUEUE_IS_OVERFLOW = 1,
+    ERROR_QUEUE_IS_EMPTY    = 2,
 };
 
 void queue_ctor (struct queue* myQueue);
@@ -32,8 +35,10 @@ void queue_push (struct queue* myQueue, type n);
 
 type queue_pop (struct queue* myQueue);
 
-void queue_print (struct queue myQueue);
+int queue_print (struct queue myQueue);
 
 void queue_check (struct queue myQueue);
 
 int scanf_check (int x);
+
+#endif
