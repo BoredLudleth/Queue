@@ -7,8 +7,8 @@
 typedef int type;
 #define TYPE_SPECIFIER "%d"
 
-#define QUEUE_LENGTH 4  //it must be a power of 2
-#define QUEUE_MASK 3
+#define QUEUE_LENGTH 128  //it must be a power of 2
+#define QUEUE_MASK 127
 #define POISON 0xDEAD
 
 #define DBG printf("FILE:%s FUNC:%s LINE:%d\n", __FILE__, __FUNCTION__, __LINE__);
